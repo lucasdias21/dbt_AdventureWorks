@@ -1,0 +1,272 @@
+version: 2
+
+sources:
+  - name: AdventureWorks_EL
+    schema: AdventureWorks_EL
+    description: This is the Adventure Works postgres database replica
+    tables:     
+      - name: sales_customer
+        description: One record per customer. This table conect the information from person. 
+        columns:
+          - name: customerid
+            description: Primary key of the customer table.
+            tests:
+              - unique
+              - not_null
+          - name: personid
+            description: foreign key to connect this table with the Person table.
+          - name: storeid
+            description: foreign key to connect this table with the Store table.
+          - name: territoryid
+            description: foreign key to connect this table with the SalesTerritory table.
+          - name: rowguid
+          - name: modifieddate
+            description: Record the date and time of record creation or record update.
+
+      - name: person_address
+        description: One record per address. This table conect the information from State Province and Country Region to Sales Order Header. 
+        columns:
+          - name: addressid
+            description: Primary key of the address table.
+            tests:
+              - unique
+              - not_null
+          - name: addressline1
+            description: First address
+          - name: addressline2
+            description: Second address
+          - name: city
+            description: City
+          - name: stateprovinceid
+            description: Foreign key to connect this table with the StateProvince table. 
+          - name: postalcode
+            description: Postal Code of the address 
+          - name: spatiallocation
+            description: Information of the code of spatial location. 
+          - name: rowguid
+          - name: modifieddate
+            description: Record the date and time of record creation or record update.
+
+      - name: person_countryregion
+        description: One record per country region code. Includes code and name of the country region and modified date. Total 3 columns.
+        columns:
+          - name: countryregioncode
+            description: Primary key of the CountryRegion table. 
+            tests:
+              - unique
+              - not_null
+          - name: name
+            description: Full name of the region.
+            tests:
+              - not_null
+          - name: modifieddate
+            description: Record the date and time of record creation or record update.
+
+      - name: production_product
+        description: One record per order. Includes cancelled and deleted orders.
+        columns:
+          - name: productid
+            description: Primary key of the Product table.
+            tests:
+              - unique
+              - not_null
+          - name: name
+            description: Name of the product. 
+            tests:
+              - not_null
+          - name: makeflag
+          - name: finishedgoodsflag
+          - name: color
+            description: product color.
+          - name: safetystocklevel
+            description: Level of extra inventory that is held to mitigate the risk of stockouts (lack of raw materials or packaging).
+          - name: reorderpoint
+            description: Specific level at which your stock needs to be replenished.
+          - name: standardcost
+            description: Expected amount paid for materials costs or labor rates.
+          - name: listprice
+            description: The quoted or printed price of a product or service.
+          - name: size
+            description: Product size.
+          - name: sizeunitmeasurecode
+            description: Foreign key to connect this table with the UnitMeasure table. 
+          - name: weightunitmeasurecode
+            description: Foreign key to connect this table with the UnitMeasure table. 
+          - name: weight
+            description: Product Weight.
+          - name: daystomanufacture
+            description: Days to manufacture a unit of the product.
+          - name: productline
+          - name: class
+          - name: style
+          - name: productsubcategoryid
+            description: Foreign key to connect this table with the ProductSubcategory table. 
+          - name: productmodelid
+            description: Foreign key to connect this table with the ProductModel table. 
+          - name: sellstartdate
+            description: Date the product began to be sold.
+          - name: sellenddate
+            description: Date the product stopped being sold.
+          - name: discontinueddate
+            description: Date that the availability of a product was discontinued.
+          - name: rowguid
+          - name: modifieddate
+            description: Record the date and time of record creation or record update.
+
+      - name: sales_salesorderdetail
+        description: This table contains the sales details.
+        columns:
+          - name: salesorderdetailid
+            description: Primary key of the sales order detail table.
+            tests:
+              - unique
+              - not_null
+          - name: businessentityid
+            description: Primary key and Foreign key of the sales order detail table.
+          - name: salesorderid
+            description: Primary key and Foreign key to conect this table with SalesOrderHeader table.
+          - name: carriertrackingnumber
+          - name: orderqty
+            description: Order quantity.
+          - name: productid
+            description: Foreign key to connect this table with the Product table. 
+          - name: specialofferid
+            description: Foreign key to connect this table with the SpecialOfferProduct table. 
+          - name: unitprice
+            description: Price per product unit.
+          - name: unitpricediscount
+            description: Discount percentage.
+          - name: linetotal
+          - name: rowguid
+          - name: modifieddate
+            description: Record the date and time of record creation or record update.
+
+
+      - name: sales_salesorderheader
+        description: One record per sales order. 
+        columns:
+          - name: salesorderid
+            description: Primary key of the sales order table.
+            tests:
+              - unique
+              - not_null
+          - name: businessentityid
+            description: Primary key and Foreign key of the sales order table.
+          - name: shipmethodid
+            description: Foreign key to conect this table with ShipMethod table.
+          - name: revisionnumber
+          - name: orderdate
+          - name: duedate  
+          - name: shipdate
+          - name: status
+          - name: onlineorderflag
+          - name: salesordernumber
+          - name: purchaseordernumber
+          - name: accountnumber
+          - name: territoryid
+            description: Foreign key to conect this table with SalesTerritory table.
+          - name: billtoaddressid
+            description: Foreign key to conect this table with Address table.
+          - name: shiptoaddressid
+            description: Foreign key to conect this table with Address table.
+          - name: creditcardid
+            description: Foreign key to conect this table with CreditCard table.
+          - name: creditcardapprovalcode 
+          - name: currencyrateid
+            description: Foreign key to conect this table with CurrencyRate table.
+          - name: subtotal
+            description: Subtotal of the order.
+          - name: taxamt
+            description: Tax Amount.
+          - name: freight
+          - name: totaldue
+          - name: comment
+          - name: rowguid
+          - name: modifieddate
+            description: Record the date and time of record creation or record update.
+
+      - name: sales_creditcard
+        description: One record per type of credit card used to pay.
+        columns:
+          - name: creditcardid
+            description: Primary key of the credit card table.
+            tests:
+              - unique
+              - not_null
+          - name: cardtype
+            description: Credit card type name.
+          - name: cardnumber
+          - name: expmonth
+            description: Card expiration month.
+          - name: expyear
+            description: card expiration year.
+          - name: modifieddate
+            description: Record the date and time of record creation or record update.        
+
+      - name: sales_salesreason
+        description: One record per reason. 
+        columns:
+          - name: salesreasonid
+            description: Primary key of the sales reason table.
+            tests:
+              - unique
+              - not_null
+          - name: name
+            description: Reason.
+          - name: reasontype
+            description: Category of the reason.
+          - name: modifieddate
+            description: Record the date and time of record creation or record update.  
+
+      - name: person_person
+        description: One record per person. 
+        columns:
+          - name: businessentityid
+            description: Primary key and Foreign key of the person table.
+            tests:
+              - unique
+              - not_null
+          - name: persontype
+          - name: namestyle
+          - name: title
+          - name: firstname
+          - name: middlename
+          - name: lastname
+          - name: suffix
+          - name: emailpromotion
+          - name: additionalcantactinfo
+          - name: demographics
+          - name: rowguid
+          - name: modifieddate
+            description: Record the date and time of record creation or record update.
+
+      - name: person_stateprovince
+        description: One record per state province. 
+        columns:
+          - name: stateprovinceid
+            description: Primary key of the StateProvince table.
+            tests:
+              - unique
+              - not_null
+          - name: stateprovincecode
+          - name: countryregioncode
+            description: Foreign key to conect this table with CountryRegion table.
+          - name: isonlystateprovinceflag
+          - name: name
+            description: State Province name.
+          - name: territoryid
+            description: Foreign key to conect this table with SalesTerritory table.
+          - name: rowguid
+          - name: modifieddate
+            description: Record the date and time of record creation or record update.
+          
+      - name: sales_salesorderheadersalesreason
+        description: This table connects the SalesReason table with the SalesOrderHeader table.
+        columns:
+          - name: businessentityid
+          - name: salesorderid
+            description: Primary key and Foreign key to connects to SalesOrderHeader table.
+          - name: salesreasonid
+            description: Primary key and Foreign key to connects to SalesReason table.
+          - name: modifieddate
+            description: Record the date and time of record creation or record update.
